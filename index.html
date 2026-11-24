@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity 破冰成功！</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top left, #f3f4f6, #e5e7eb);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
+      padding: 20px;
+    }
+
+    /* 粉彩漸層卡片 */
+    .card {
+      width: 100%;
+      max-width: 440px;
+      padding: 48px 36px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 30%, #ee9ca7 70%, #ffdde1 100%);
+      box-shadow: 
+        0 20px 40px -15px rgba(238, 156, 167, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+      backdrop-filter: blur(10px);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 
+        0 26px 50px -15px rgba(238, 156, 167, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #3b2d38;
+      margin-bottom: 32px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+    }
+
+    /* 精美發光按鈕 */
+    .glow-btn {
+      position: relative;
+      border: none;
+      outline: none;
+      padding: 16px 36px;
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      cursor: pointer;
+      box-shadow: 
+        0 0 18px rgba(118, 75, 162, 0.55),
+        0 4px 15px rgba(102, 126, 234, 0.4);
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+
+    .glow-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 
+        0 0 28px rgba(118, 75, 162, 0.75),
+        0 6px 20px rgba(102, 126, 234, 0.55);
+    }
+
+    .glow-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 點擊與鼓勵小語顯示區域 */
+    .result-container {
+      margin-top: 36px;
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .count-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #4a3b47;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .count-number {
+      color: #764ba2;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .quote-text {
+      font-size: 16px;
+      font-weight: 500;
+      color: #4a3b47;
+      line-height: 1.6;
+      max-width: 320px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1 class="title">Antigravity 破冰成功！</h1>
+    <button id="actionBtn" class="glow-btn">點擊領取能量 ✨</button>
+
+    <div class="result-container">
+      <div id="countBadge" class="count-badge" style="display: none;">
+        已累積點擊：<span id="clickCount" class="count-number">0</span> 次
+      </div>
+      <p id="quoteText" class="quote-text"></p>
+    </div>
+  </div>
+
+  <script>
+    const quotes = [
+      "每一次出發，都是通往精彩未來的起點！🌟",
+      "程式碼就像魔法，你正用雙手創造驚喜！🪄",
+      "保持好奇心與熱情，世界等著你的新靈感！💡",
+      "小小一步累積起來，就是跨越星辰的躍進！🚀",
+      "今天也是充滿可能與希望的一天，加油！☀️",
+      "從零到一最不容易，但你已經成功破冰了！🎉",
+      "每一次 debug 都是在讓自己變得更加強大！💪",
+      "放輕鬆呼吸一下，你做得比想像中還要出色！✨"
+    ];
+
+    let count = 0;
+    const btn = document.getElementById('actionBtn');
+    const countBadge = document.getElementById('countBadge');
+    const clickCountSpan = document.getElementById('clickCount');
+    const quoteText = document.getElementById('quoteText');
+
+    btn.addEventListener('click', () => {
+      count++;
+      clickCountSpan.textContent = count;
+      countBadge.style.display = 'inline-block';
+
+      // 隨機選取一句鼓勵小語
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      
+      // 重新觸發淡入動畫
+      quoteText.style.animation = 'none';
+      quoteText.offsetHeight; // trigger reflow
+      quoteText.style.animation = 'fadeIn 0.4s ease';
+      quoteText.textContent = quotes[randomIndex];
+    });
+  </script>
+
+</body>
+</html>
